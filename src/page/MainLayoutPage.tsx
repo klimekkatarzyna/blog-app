@@ -1,13 +1,22 @@
+import { useQuery } from "@tanstack/react-query";
+
 import { Header } from "../components/Header";
 import { List } from "../components/List";
 import { LoadingPage } from "./LoadingPage";
+import { getPosts } from "../services/posts";
+import { Button } from "../components/Button";
 
 export const MainLayoutPage: React.FC = () => {
-  if (false) {
+  const { error, isLoading } = useQuery({
+    queryKey: ["posts"],
+    queryFn: getPosts,
+  });
+
+  if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (false) {
+  if (error) {
     return (
       <div className="flex h-screen items-center justify-center text-slate-900">
         Something went wrong
@@ -16,9 +25,10 @@ export const MainLayoutPage: React.FC = () => {
   }
 
   return (
-    <div>
+    <div className="relative">
       <Header />
       <List />
+      <Button />
     </div>
   );
 };
