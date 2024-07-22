@@ -1,4 +1,4 @@
-import { Spinner } from "../components/Spinner";
+import { Spinner } from "../components/icons/Spinner";
 
 export const LoadingPage: React.FC = () => (
   <div
