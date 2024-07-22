@@ -8,12 +8,15 @@ const PostSchema = z.object({
   userId: z.number(),
 });
 
+const PostsSchema = z.array(PostSchema.optional());
+
+export type PostsSchemaType = z.infer<typeof PostsSchema>;
 export type PostSchemaType = z.infer<typeof PostSchema>;
 
 export const fetchPosts = async (
   pageParam: number,
   userId?: string | null
-): Promise<PostSchemaType[] | undefined> => {
+): Promise<PostsSchemaType | undefined> => {
   const url = userId
     ? `${
         import.meta.env.VITE_API_URL
@@ -22,13 +25,12 @@ export const fetchPosts = async (
 
   try {
     const response = await axios.get(url);
-    PostSchema.parse(response.data[0]);
 
-    return response.data as PostSchemaType[];
+    return PostsSchema.parse(response.data);
   } catch (error) {
     if (typeof error === "object") {
       if (error !== null && "message" in error) {
-        console.error("Form data is invalid", error?.message);
+        console.error("Data is invalid", error?.message);
       }
     }
   }
@@ -41,13 +43,12 @@ export const fetchPostById = async (
     const response = await axios.get(
       `${import.meta.env.VITE_API_URL}/posts?id=${postId}`
     );
-    PostSchema.parse(response.data[0]);
 
-    return response.data[0] as PostSchemaType;
+    return PostSchema.parse(response.data[0]);
   } catch (error) {
     if (typeof error === "object") {
       if (error !== null && "message" in error) {
-        console.error("Form data is invalid", error?.message);
+        console.error("Data is invalid", error?.message);
       }
     }
   }

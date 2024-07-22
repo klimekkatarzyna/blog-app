@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import { fetchAutorById, fetchAutors } from "../services/autors";
 import { Select } from "./Select";
-import { BackButton } from "./BackButton";
+import AngleLeft from "./icons/AngleLeft";
 
 export const Header: React.FC = () => {
   const { isLoading, error, data } = useQuery({
@@ -14,7 +14,7 @@ export const Header: React.FC = () => {
   const { userId, postId } = useParams();
 
   const { data: selectedAutor } = useQuery({
-    queryKey: ["autors", userId],
+    queryKey: ["autor", userId],
     queryFn: () => fetchAutorById(userId),
     enabled: !!userId,
   });
@@ -25,11 +25,15 @@ export const Header: React.FC = () => {
         className="max-w-7xl flex basis-full items-center w-full mx-auto px-4 sm:px-6 lg:px-8 gap-4"
         aria-label="Global"
       >
-        {postId && <BackButton />}
+        {postId && (
+          <Link to="/">
+            <AngleLeft />
+          </Link>
+        )}
 
         {data && !postId && (
           <Select
-            list={data}
+            list={data || []}
             isLoading={isLoading}
             error={error}
             selectedItem={selectedAutor}

@@ -4,7 +4,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 
 import { fetchPosts } from "../services/posts";
 import { useInView } from "react-intersection-observer";
-import { Spinner } from "./Spinner";
+import { Spinner } from "./icons/Spinner";
 import { Posts } from "./Posts";
 import { ErrorPage } from "../page/ErrorPage";
 
@@ -18,7 +18,6 @@ export const List: React.FC = () => {
       queryKey: ["posts", userId],
       queryFn: ({ pageParam }) => fetchPosts(pageParam, userId),
       initialPageParam: 1,
-      // enabled: !!userId,
       getNextPageParam: (lastPage, allPages) => {
         const nextPage = lastPage?.length ? allPages.length + 1 : undefined;
         return nextPage;

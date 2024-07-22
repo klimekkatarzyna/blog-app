@@ -9,7 +9,7 @@ export const Post: React.FC = () => {
   const { postId } = useParams();
 
   const { data, error } = useQuery({
-    queryKey: ["posts", postId],
+    queryKey: ["post", postId],
     queryFn: () => fetchPostById(postId),
     enabled: !!postId,
   });
