@@ -13,7 +13,7 @@ import { Spinner } from "./icons/Spinner";
 import { Check } from "./icons/Check";
 
 type SelectProps<T extends AutorSchemaType> = {
-  list: T[] | undefined;
+  list: T[];
   isLoading?: boolean;
   error?: Error | null;
   selectedItem?: AutorSchemaType | null;
@@ -63,6 +63,8 @@ export const Select = <T extends AutorSchemaType>({
     navigate("/", { replace: true });
   };
 
+  const isButtonDisabled = !!query || !selected;
+
   return (
     <Combobox
       immediate
@@ -84,7 +86,13 @@ export const Select = <T extends AutorSchemaType>({
             <button
               onClick={() => onClearInput()}
               type="button"
-              className="bg-gray-300 inline p-2 ml-2 rounded-md transition-all text-gray-700 hover:bg-gray-400 hover:text-white"
+              disabled={isButtonDisabled}
+              className={twMerge(
+                "bg-gray-300 inline p-2 ml-2 rounded-md transition-all text-gray-700",
+                isButtonDisabled
+                  ? "opacity-50"
+                  : "hover:bg-gray-400 hover:text-white"
+              )}
             >
               Clear input
             </button>

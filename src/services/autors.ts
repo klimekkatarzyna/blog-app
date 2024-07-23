@@ -10,7 +10,7 @@ const AutorSchema = z.object({
   website: z.string(),
 });
 
-const AutorsSchema = z.array(AutorSchema.optional());
+const AutorsSchema = z.array(AutorSchema);
 
 export type AutorSchemaType = z.infer<typeof AutorSchema>;
 export type AutorsSchemaType = z.infer<typeof AutorsSchema>;

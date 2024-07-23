@@ -33,7 +33,7 @@ export const Header: React.FC = () => {
 
         {data && !postId && (
           <Select
-            list={data || []}
+            list={data}
             isLoading={isLoading}
             error={error}
             selectedItem={selectedAutor}
