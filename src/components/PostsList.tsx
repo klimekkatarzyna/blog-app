@@ -45,7 +45,7 @@ const PostsList: React.FC = () => {
           Blog posts
         </h2>
       </div>
-      {!data?.pages?.[0]?.length && (
+      {data?.pages?.[0]?.length === 0 && (
         <h3 className="flex items-center justify-center w-full uppercase text-gray-700 font-semibold text-sm">
           No posts
         </h3>
