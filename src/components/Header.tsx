@@ -4,8 +4,9 @@ import { Link, useParams } from "react-router-dom";
 import { fetchAutorById, fetchAutors } from "../services/autors";
 import { Select } from "./Select";
 import AngleLeft from "./icons/AngleLeft";
+import React, { FC } from "react";
 
-export const Header: React.FC = () => {
+export const Header: FC = () => {
   const { isLoading, error, data } = useQuery({
     queryKey: ["autors"],
     queryFn: () => fetchAutors(),
@@ -26,7 +27,7 @@ export const Header: React.FC = () => {
         aria-label="Global"
       >
         {postId && (
-          <Link to="/">
+          <Link to="/" data-testid="back-button">
             <AngleLeft />
           </Link>
         )}
@@ -34,6 +35,7 @@ export const Header: React.FC = () => {
         {data && !postId && (
           <Select
             list={data}
+            data-testId="autors-select"
             isLoading={isLoading}
             error={error}
             selectedItem={selectedAutor}

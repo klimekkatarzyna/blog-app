@@ -23,33 +23,17 @@ export const fetchPosts = async (
       }/posts?userId=${userId}&_page=${pageParam}`
     : `${import.meta.env.VITE_API_URL}/posts?_page=${pageParam}`;
 
-  try {
-    const response = await axios.get(url);
+  const response = await axios.get(url);
 
-    return PostsSchema.parse(response.data);
-  } catch (error) {
-    if (typeof error === "object") {
-      if (error !== null && "message" in error) {
-        console.error("Data is invalid", error?.message);
-      }
-    }
-  }
+  return PostsSchema.parse(response.data);
 };
 
 export const fetchPostById = async (
   postId: string | undefined
 ): Promise<PostSchemaType | undefined> => {
-  try {
-    const response = await axios.get(
-      `${import.meta.env.VITE_API_URL}/posts?id=${postId}`
-    );
+  const response = await axios.get(
+    `${import.meta.env.VITE_API_URL}/posts?id=${postId}`
+  );
 
-    return PostSchema.parse(response.data[0]);
-  } catch (error) {
-    if (typeof error === "object") {
-      if (error !== null && "message" in error) {
-        console.error("Data is invalid", error?.message);
-      }
-    }
-  }
+  return PostSchema.parse(response.data[0]);
 };

@@ -1,5 +1,14 @@
 {
   "files": [],
+  "compilerOptions": {
+    "types": [
+      "vitest/globals"
+    ]
+  },
+  "include": [
+    "src",
+    ".src/test/mocks/setupTests.ts"
+  ],
   "references": [
     {
       "path": "./tsconfig.app.json"
@@ -7,5 +16,5 @@
     {
       "path": "./tsconfig.node.json"
     }
-  ]
+  ],
 }

@@ -5,7 +5,7 @@ import {
   ComboboxOptions,
 } from "@headlessui/react";
 import { Link, useNavigate } from "react-router-dom";
-import { Fragment, useEffect, useMemo, useState } from "react";
+import { Fragment, useMemo, useState } from "react";
 import { twMerge } from "tailwind-merge";
 
 import { AutorSchemaType } from "../services/autors";
@@ -25,19 +25,7 @@ export const Select = <T extends AutorSchemaType>({
   selectedItem,
 }: SelectProps<T>) => {
   const [query, setQuery] = useState<string>("");
-  const [selected, setSelected] = useState<AutorSchemaType | null>(
-    selectedItem || null
-  );
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!selected?.id) return;
-    navigate(`/posts/userId/${selected?.id}`, { replace: true });
-  }, [selected?.id]);
-
-  useEffect(() => {
-    setSelected(selectedItem || null);
-  }, [setSelected, selectedItem?.id]);
 
   const filteredPeople = useMemo(
     () =>
@@ -63,14 +51,16 @@ export const Select = <T extends AutorSchemaType>({
     navigate("/", { replace: true });
   };
 
-  const isButtonDisabled = !!query || !selected;
+  const isButtonDisabled = !!query || !selectedItem;
 
   return (
     <Combobox
       immediate
       as="div"
-      value={selected}
-      onChange={(value) => setSelected(value || null)}
+      value={selectedItem || null}
+      onChange={(value) =>
+        value?.id && navigate(`/posts/user/${value.id}`, { replace: true })
+      }
       onClose={() => setQuery("")}
     >
       {({ open }) => (
@@ -81,6 +71,7 @@ export const Select = <T extends AutorSchemaType>({
               displayValue={(person: T) => person?.name}
               onChange={(event) => setQuery(event.target.value)}
               placeholder="Select autor"
+              data-testid="select"
             />
 
             <button
@@ -106,7 +97,12 @@ export const Select = <T extends AutorSchemaType>({
               {isLoading && <Spinner />}
 
               {filteredPeople?.map((person) => (
-                <ComboboxOption as={Fragment} key={person.id} value={person}>
+                <ComboboxOption
+                  as={Fragment}
+                  key={person.id}
+                  value={person}
+                  data-testid="autors-list"
+                >
                   {({ selected }) => (
                     <div
                       className={twMerge(
@@ -115,9 +111,7 @@ export const Select = <T extends AutorSchemaType>({
                       )}
                     >
                       {selected && <Check />}
-                      <Link to={`/posts/userId/${person.id}`}>
-                        {person.name}
-                      </Link>
+                      <Link to={`/posts/user/${person.id}`}>{person.name}</Link>
                     </div>
                   )}
                 </ComboboxOption>

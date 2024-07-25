@@ -1,31 +1,22 @@
-import { ComponentType, lazy, ReactElement, Suspense } from "react";
+import { lazy, Suspense } from "react";
 import { useRoutes } from "react-router-dom";
 
 import { LoadingPage } from "../page/LoadingPage";
-import { MainLayoutPage } from "../page/MainLayoutPage";
-// import PostPage from "../page/PostPage";
+import { MainLayout } from "../page/MainLayout";
 
-const Loadable = (Component: ComponentType) => (): ReactElement =>
-  (
-    <Suspense fallback={<LoadingPage />}>
-      <Component />
-    </Suspense>
-  );
-
-export const PostsPage = Loadable(lazy(() => import("../page/PostsPage")));
-export const PostPage = Loadable(lazy(() => import("../page/PostPage")));
+export const PostsList = lazy(() => import("../components/PostsList"));
+export const Post = lazy(() => import("../components/Post"));
 
 export default function Router() {
-  return useRoutes([
+  const routes = useRoutes([
     {
       children: [
-        { element: <PostsPage />, path: "/" },
-        { element: <PostsPage />, path: "/userId/:userId" },
-        { element: <PostsPage />, path: "/posts/userId/:userId" },
-        { element: <PostPage />, path: "/post/:postId" },
-        { element: <MainLayoutPage />, path: "/posts/userId/:userId" },
+        { element: <PostsList />, path: "/" },
+        { element: <PostsList />, path: "/posts/user/:userId" },
+        { element: <Post />, path: "/post/:postId" },
       ],
-      element: <MainLayoutPage />,
+      element: <MainLayout />,
     },
   ]);
+  return <Suspense fallback={<LoadingPage />}>{routes}</Suspense>;
 }

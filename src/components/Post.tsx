@@ -5,7 +5,7 @@ import { fetchPostById } from "../services/posts";
 import { PostDetails } from "./PostDetails";
 import { ErrorPage } from "../page/ErrorPage";
 
-export const Post: React.FC = () => {
+const Post: React.FC = () => {
   const { postId } = useParams();
 
   const { data, error } = useQuery({
@@ -27,3 +27,5 @@ export const Post: React.FC = () => {
     </div>
   );
 };
+
+export default Post;

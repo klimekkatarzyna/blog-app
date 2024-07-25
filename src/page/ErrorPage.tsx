@@ -1,4 +1,6 @@
-export const ErrorPage: React.FC = () => (
+import React, { FC } from "react";
+
+export const ErrorPage: FC = () => (
   <div
     className="fixed left-0 top-0 flex h-screen w-screen items-center justify-center bg-transparent"
     data-testid="error-page"

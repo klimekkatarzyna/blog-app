@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
@@ -8,7 +8,7 @@ import { Spinner } from "./icons/Spinner";
 import { Posts } from "./Posts";
 import { ErrorPage } from "../page/ErrorPage";
 
-export const List: React.FC = () => {
+const PostsList: React.FC = () => {
   const { ref, inView } = useInView();
 
   const { userId } = useParams();
@@ -38,16 +38,26 @@ export const List: React.FC = () => {
     <div
       className="max-w-[60rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto"
       id="top"
+      data-testid="list-component"
     >
       <div className="max-w-2xl mx-auto text-center mb-10 lg:mb-14">
         <h2 className="text-2xl font-bold md:text-4xl md:leading-tight">
           Blog posts
         </h2>
       </div>
-
+      {!data?.pages?.[0]?.length && (
+        <h3 className="flex items-center justify-center w-full uppercase text-gray-700 font-semibold text-sm">
+          No posts
+        </h3>
+      )}
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {data?.pages.map((pages, index) => (
-          <Posts key={index} pages={pages} innerRef={ref} />
+          <Posts
+            key={index}
+            pages={pages}
+            innerRef={ref}
+            data-testid="posts-list"
+          />
         ))}
       </div>
       {isFetchingNextPage && hasNextPage && (
@@ -58,3 +68,5 @@ export const List: React.FC = () => {
     </div>
   );
 };
+
+export default PostsList;

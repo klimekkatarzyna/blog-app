@@ -1,4 +1,6 @@
-export const Button: React.FC = () => (
+import React, { FC } from "react";
+
+export const Button: FC = () => (
   <a
     href="#top"
     className="w-[50px] h-[50px] rounded-full bg-gray-300 hover:bg-gray-400 transition-all text-gray-900 fixed bottom-4 right-4 shadow-md"

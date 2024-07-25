@@ -20,7 +20,10 @@ export const PostDetails: React.FC<PropsWithChildren<PostDetailsProps>> = ({
     </div>
 
     <div className="mt-7">
-      <h3 className="text-xl font-semibold text-gray-800 group-hover:text-gray-600 capitalize">
+      <h3
+        data-testid="post-title"
+        className="text-xl font-semibold text-gray-800 group-hover:text-gray-600 capitalize"
+      >
         {data?.title}
       </h3>
       <p className="mt-3 text-gray-800">{data?.body}</p>
