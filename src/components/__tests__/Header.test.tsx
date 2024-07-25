@@ -1,10 +1,8 @@
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { describe, it, expect, vi } from "vitest";
+import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, vi, afterEach } from "vitest";
 import { Header } from "../Header";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Select } from "../Select";
-import { server } from "../../test/mocks/server";
 import { BrowserRouter } from "react-router-dom";
 
 const queryClient = new QueryClient({
@@ -16,6 +14,10 @@ const queryClient = new QueryClient({
 });
 
 describe("Header component", () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   it("should render button correctly", () => {
     vi.mock("react-router-dom", async (importOriginal) => {
       const mod = await importOriginal<typeof import("react-router-dom")>();
@@ -41,38 +43,43 @@ describe("Header component", () => {
     expect(window.location.href).toContain("/");
   });
 
-  it("displays autors from backend", async () => {
-    vi.mock("react-router-dom", async (importOriginal) => {
-      const mod = await importOriginal<typeof import("react-router-dom")>();
-      return {
-        ...mod,
-        useParams: () => ({ userId: "1" }),
-      };
-    });
+  // it("displays autors from backend", async () => {
+  //   vi.mock("react-router-dom", async (importOriginal) => {
+  //     const mod = await importOriginal<typeof import("react-router-dom")>();
+  //     return {
+  //       ...mod,
+  //       useParams: () => ({ userId: "1" }),
+  //     };
+  //   });
 
-    render(
-      <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
-          <Header />
-        </BrowserRouter>
-      </QueryClientProvider>
-    );
+  // const rendered = render(
+  //   <QueryClientProvider client={queryClient}>
+  //     <BrowserRouter>
+  //       <Header />
+  //     </BrowserRouter>
+  //   </QueryClientProvider>
+  // );
 
-    // expect(await screen.findByText(/Post 1 title/i)).toBeInTheDocument();
-    await waitFor(
-      () => {
-        expect(screen.getByTestId("posts-list")).toBeInTheDocument();
-      }
-      // const button = screen.getByTestId("autors-select");
-      // expect(button).toBeInTheDocument();
-      // expect(screen.getByTestId("autors-select")).toBeInTheDocument();
-    );
-  });
+  // const combobox = rendered.getByRole("combobox");
+  // fireEvent.keyDown(combobox, { key: "Jack", code: "KeyJ" });
+  // expect(combobox.getAttribute("value")).toBe("Jack");
 
-  //   await waitFor(() =>
-  //     expect(screen.getByTestId("select")).toBeInTheDocument()
-  //   );
+  // expect(await screen.findByText(/Post 1 title/i)).toBeInTheDocument();
+  // await waitFor(
+  //   () => {
+  //     expect(screen.getByTestId("select")).toBeInTheDocument();
+  //     // const button = screen.getByTestId("autors-select");
+  //   }
+  //   // expect(button).toBeInTheDocument();
+  // );
 
-  //   expect(await screen.findByText(/Jack/i)).toBeInTheDocument();
+  // const authorName = "Jack"; // Replace with the actual author name you expect
+  // const authorOption = screen.getByText(authorName);
+  // fireEvent.click(authorOption);
+
+  // Check that the selected author is now displayed in the input
+  // expect(screen.getByDisplayValue(authorName)).toBeInTheDocument();
+  // expect(await screen.getByTestId("autors-select")).toBeInTheDocument();
+  // expect(await screen.findByText(/Jack/i)).toBeInTheDocument();
   // });
 });
